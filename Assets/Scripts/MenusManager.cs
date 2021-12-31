@@ -11,6 +11,10 @@ public class MenusManager : MonoBehaviour
     GameObject pauseGamePanel;
     GameObject gameOverPanel;
 
+    //Others
+    int actualLevel;
+    enum levels { level1, level2 }
+
     void Start()
     {
         SetupPanels();
@@ -36,19 +40,69 @@ public class MenusManager : MonoBehaviour
         gameOverPanel.SetActive(false);
     }
 
+    //Game
+    void SetUpLevel1()
+    {
+        actualLevel = (int)levels.level1;
+        Instantiate(Resources.Load<GameObject>("Prefabs/Player/Player"), Vector3.zero, Quaternion.identity);
+        MyGameManager gameManager = FindObjectOfType<MyGameManager>();
+        if (gameManager)
+        {
+            gameManager.SpawnEnemiesLevel1();
+        }
+        else { Debug.Log("No encontro MyGameManager"); }
+    }
+    void SetUpLevel2()
+    {
+        actualLevel = (int)levels.level2;
+        Instantiate(Resources.Load<GameObject>("Prefabs/Player/Player"), Vector3.zero, Quaternion.identity);
+        MyGameManager gameManager = FindObjectOfType<MyGameManager>();
+        if (gameManager)
+        {
+            gameManager.SpawnEnemiesLevel2();
+        }
+        else { Debug.Log("No encontro MyGameManager"); }
+    }
+    void RestartGame()
+    {
+        switch (actualLevel)
+        {
+            case (int)levels.level1:
+                SetUpLevel1();
+                break;
+            case (int)levels.level2:
+                SetUpLevel2();
+                break;
+        }
+    }
+    void DeleteGameObjects()
+    {
+        foreach (var enemy in FindObjectsOfType<Enemy>())
+        {
+            Destroy(enemy.gameObject);
+        }
+        Destroy(FindObjectOfType<PlayerController>().gameObject);
+    }
+
     //Buttons
     //Main
     public void PlayLevel1()
     {
+        actualLevel = (int)levels.level1;
         gamePanel.SetActive(true);
         pauseGamePanel.SetActive(false);
         mainMenuPanel.SetActive(false);
+
+        SetUpLevel1();
     }
     public void PlayLevel2()
     {
+        actualLevel = (int)levels.level2;
         gamePanel.SetActive(true);
         pauseGamePanel.SetActive(false);
         mainMenuPanel.SetActive(false);
+
+        SetUpLevel2();
     }
     public void OpenCredits()
     {
@@ -74,11 +128,13 @@ public class MenusManager : MonoBehaviour
     {
         gamePanel.SetActive(false);
         mainMenuPanel.SetActive(true);
+        DeleteGameObjects();
     }
     public void FinishGame()
     {
         gameOverPanel.SetActive(true);
         gamePanel.SetActive(false);
+        DeleteGameObjects();
     }
     //GameOver
     public void PlayAgain()
@@ -86,6 +142,7 @@ public class MenusManager : MonoBehaviour
         gamePanel.SetActive(true);
         pauseGamePanel.SetActive(false);
         gameOverPanel.SetActive(false);
+        RestartGame();
     }
     public void ReturnMainMenuFromGameOver()
     {
