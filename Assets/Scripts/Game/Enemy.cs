@@ -14,6 +14,9 @@ public class Enemy : MonoBehaviour
     bool movingRight = true;
     bool movingLeft = false;
 
+    //Others
+    enum levels { level1, level2 }
+
     void Start()
     {
 
@@ -25,26 +28,36 @@ public class Enemy : MonoBehaviour
     }
 
     //SetUp
-    public void SetupEnemyType1()
+    void SetUpMovement(int level)
+    {
+        switch (level)
+        {
+            case (int)levels.level1:
+                cdMovement = 2f;
+                break;
+            case (int)levels.level2:
+                cdMovement = 1f;
+                break;
+        }
+        InvokeRepeating("Move", 1f, cdMovement);
+    }
+    public void SetupEnemyType1(int level)
     {
         health = 1;
-        cdMovement = 1f;
         scoreInDeath = 1;
-        InvokeRepeating("Move", 1f, cdMovement);
+        SetUpMovement(level);
     }
-    public void SetupEnemyType2()
+    public void SetupEnemyType2(int level)
     {
         health = 2;
-        cdMovement = 2f;
         scoreInDeath = 2;
-        InvokeRepeating("Move", 1f, cdMovement);
+        SetUpMovement(level);
     }
-    public void SetupEnemyType3()
+    public void SetupEnemyType3(int level)
     {
         health = 3;
-        cdMovement = 3f;
         scoreInDeath = 3;
-        InvokeRepeating("Move", 1f, cdMovement);
+        SetUpMovement(level);
     }
 
     //Movement
@@ -99,16 +112,36 @@ public class Enemy : MonoBehaviour
     }
 
     //Death
+    void SendScore()
+    {
+        MyGameManager gameManager = FindObjectOfType<MyGameManager>();
+        if (gameManager)
+        {
+            if (transform.position.y >= 8)
+            {
+                gameManager.AddScore(scoreInDeath * 3);
+            }
+            else
+            {
+                gameManager.AddScore(scoreInDeath);
+            }
+        }
+        else { Debug.Log("No encontro MyGameManager"); }
+    }
+    void SpawnBuff()
+    {
+        int random = Random.Range(0, 2);
+        if (random == 1)
+        {
+            Instantiate(Resources.Load("Prefabs/Enemies/Buff"), transform.position, Quaternion.identity);
+        }
+    }
     void CheckDeath()
     {
         if (health <= 0)
         {
-            MyGameManager gameManager = FindObjectOfType<MyGameManager>();
-            if (gameManager)
-            {
-                gameManager.AddScore(scoreInDeath);
-            }
-            else { Debug.Log("No encontro MyGameManager"); }
+            SendScore();
+            SpawnBuff();
             Destroy(gameObject);
         }
     }

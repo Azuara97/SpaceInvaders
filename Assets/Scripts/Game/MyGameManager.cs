@@ -15,6 +15,9 @@ public class MyGameManager : MonoBehaviour
     //Score
     int playerScore;
 
+    //Others
+    enum levels { level1, level2 }
+
     void Start()
     {
         
@@ -26,33 +29,33 @@ public class MyGameManager : MonoBehaviour
     }
 
     //SetUpGame
-    void SpawnEnemiesType1(float x, float y)
+    void SpawnEnemiesType1(float x, float y, int level)
     {
         for(float i = x; i < numberEnemiesInRow; i++)
         {
             Vector3 position = new Vector3(i, y, 0f);
             var enemy = Instantiate(Resources.Load<GameObject>("Prefabs/Enemies/EnemyType1"), position, Quaternion.identity);
-            enemy.GetComponent<Enemy>().SetupEnemyType1();
+            enemy.GetComponent<Enemy>().SetupEnemyType1(level);
             totalEnemiesInLevel++;
         }
     }
-    void SpawnEnemiesType2(float x, float y)
+    void SpawnEnemiesType2(float x, float y, int level)
     {
         for(float i = x; i < numberEnemiesInRow; i++)
         {
             Vector3 position = new Vector3(i, y, 0f);
             var enemy = Instantiate(Resources.Load<GameObject>("Prefabs/Enemies/EnemyType2"), position, Quaternion.identity);
-            enemy.GetComponent<Enemy>().SetupEnemyType2();
+            enemy.GetComponent<Enemy>().SetupEnemyType2(level);
             totalEnemiesInLevel++;
         }
     }
-    void SpawnEnemiesType3(float x, float y)
+    void SpawnEnemiesType3(float x, float y, int level)
     {
         for (float i = x; i < numberEnemiesInRow; i++)
         {
             Vector3 position = new Vector3(i, y, 0f);
             var enemy = Instantiate(Resources.Load<GameObject>("Prefabs/Enemies/EnemyType3"), position, Quaternion.identity);
-            enemy.GetComponent<Enemy>().SetupEnemyType3();
+            enemy.GetComponent<Enemy>().SetupEnemyType3(level);
             totalEnemiesInLevel++;
         }
     }
@@ -62,11 +65,11 @@ public class MyGameManager : MonoBehaviour
         playerScore = 0;
         speedUpgradedLevel2 = false;
         speedUpgradedLevel3 = false;
-        SpawnEnemiesType3(0f, 15f);
-        SpawnEnemiesType2(0f, 14f);
-        SpawnEnemiesType2(0f, 13f);
-        SpawnEnemiesType1(0f, 12f);
-        SpawnEnemiesType1(0f, 11f);
+        SpawnEnemiesType3(0f, 15f, (int)levels.level1);
+        SpawnEnemiesType2(0f, 14f, (int)levels.level1);
+        SpawnEnemiesType2(0f, 13f, (int)levels.level1);
+        SpawnEnemiesType1(0f, 12f, (int)levels.level1);
+        SpawnEnemiesType1(0f, 11f, (int)levels.level1);
         halfEnemiesInLevel = totalEnemiesInLevel / 2;
         quarterEnemiesInLevel = totalEnemiesInLevel / 4;
     }
@@ -76,11 +79,11 @@ public class MyGameManager : MonoBehaviour
         playerScore = 0;
         speedUpgradedLevel2 = false;
         speedUpgradedLevel3 = false;
-        SpawnEnemiesType3(0f, 15f);
-        SpawnEnemiesType2(0.5f, 14f);
-        SpawnEnemiesType2(0f, 13f);
-        SpawnEnemiesType1(0.5f, 12f);
-        SpawnEnemiesType1(0f, 11f);
+        SpawnEnemiesType3(0f, 15f, (int)levels.level2);
+        SpawnEnemiesType2(0.5f, 14f, (int)levels.level2);
+        SpawnEnemiesType2(0f, 13f, (int)levels.level2);
+        SpawnEnemiesType1(0.5f, 12f, (int)levels.level2);
+        SpawnEnemiesType1(0f, 11f, (int)levels.level2);
         halfEnemiesInLevel = totalEnemiesInLevel / 2;
         quarterEnemiesInLevel = totalEnemiesInLevel / 4;
     }
