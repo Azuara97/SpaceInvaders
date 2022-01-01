@@ -13,11 +13,11 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetButtonDown("Right"))
         {
-            transform.position += new Vector3(0.5f, 0f, 0f);
+            transform.position += new Vector3(1f, 0f, 0f);
         }
         else if (Input.GetButtonDown("Left"))
         {
-            transform.position -= new Vector3(0.5f, 0f, 0f);
+            transform.position -= new Vector3(1f, 0f, 0f);
         }
 
         if (Input.GetButtonDown("Fire1"))

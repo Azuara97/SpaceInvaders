@@ -80,6 +80,16 @@ public class Enemy : MonoBehaviour
                 movingLeft = false;
             }
         }
+
+        if (transform.position.y < 0)
+        {
+            MenusManager menus = FindObjectOfType<MenusManager>();
+            if (menus)
+            {
+                menus.FinishGame();
+            }
+            else { Debug.Log("No encontro MenusManager"); }
+        }
     }
     public void UpgradeSpeed(int level)
     {
@@ -114,7 +124,12 @@ public class Enemy : MonoBehaviour
         }
         else if (collision.gameObject.GetComponent<PlayerController>())
         {
-            Debug.Log("player");
+            MenusManager menus = FindObjectOfType<MenusManager>();
+            if (menus)
+            {
+                menus.FinishGame();
+            }
+            else { Debug.Log("No encontro MenusManager"); }
         }
     }
 }

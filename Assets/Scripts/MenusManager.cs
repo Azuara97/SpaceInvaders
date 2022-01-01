@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenusManager : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class MenusManager : MonoBehaviour
     GameObject pauseGamePanel;
     GameObject gameOverPanel;
 
+    //Text
+    Text scoreText;
+
     //Others
     int actualLevel;
     enum levels { level1, level2 }
@@ -18,6 +22,7 @@ public class MenusManager : MonoBehaviour
     void Start()
     {
         SetupPanels();
+        SetupText();
     }
 
     void Update()
@@ -38,6 +43,10 @@ public class MenusManager : MonoBehaviour
         gamePanel.SetActive(false);
         pauseGamePanel.SetActive(false);
         gameOverPanel.SetActive(false);
+    }
+    void SetupText()
+    {
+        scoreText = gameOverPanel.transform.GetChild(1).GetChild(1).GetComponent<Text>();
     }
 
     //Game
@@ -135,6 +144,12 @@ public class MenusManager : MonoBehaviour
         gameOverPanel.SetActive(true);
         gamePanel.SetActive(false);
         DeleteGameObjects();
+        MyGameManager gameManager = FindObjectOfType<MyGameManager>();
+        if (gameManager)
+        {
+            scoreText.text = gameManager.GetPlayerScore().ToString();
+        }
+        else { Debug.Log("No encontro MyGameManager"); }
     }
     //GameOver
     public void PlayAgain()
