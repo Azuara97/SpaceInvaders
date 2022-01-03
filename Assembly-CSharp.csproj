@@ -60,8 +60,8 @@
     <Compile Include="Assets/Scripts/Game/MyGameManager.cs" />
     <Compile Include="Assets/Scripts/Game/Enemy.cs" />
     <Compile Include="Assets/Scripts/Game/Bullet.cs" />
-    <Compile Include="Assets/Scripts/MenusManager.cs" />
     <Compile Include="Assets/Scripts/Game/Buff.cs" />
+    <Compile Include="Assets/Scripts/MenusManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
